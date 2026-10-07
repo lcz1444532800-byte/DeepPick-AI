@@ -1,23 +1,30 @@
-# 更新记录
+# Changelog
 
-## 1.2.3 · 2026-10-07
+## 1.2.3 — English Edition
 
-- 提供不含个人配置、密钥或历史的 Windows x64 完整分享包。
-- 首页新增“完整教程与常见问题”入口，教程可离线阅读。
-- 补齐首次使用、AI 配置、更新、卸载和 24 个常见问题。
-- 整理当前运行组件、来源及校验文件。
+- Replace published application UI, dialogs, errors, status messages, tray menus, and capture hints with English.
+- Use English for AI translation, summaries, and explanations.
+- Provide a complete offline English guide and 24 FAQs.
+- Publish English repository information, development notes, screenshots, and release attachments.
+- Retain the local OCR, selection, memory, cleanup, and independent manual-AI behavior.
+
+## 1.2.3 — Distribution improvements
+
+- Provide a complete Windows x64 package without personal settings, keys, or history.
+- Add a homepage link to the offline guide and FAQ.
+- Document first launch, AI setup, updates, removal, and component checksums.
 
 ## 1.2.2
 
-- 保持模型就绪，回收多余推理工作内存，减少闲置与连续使用的内存占用。
-- 限制缓存和临时文件总量，增加定期清理与设置中的存储管理。
-- 抓屏前隐藏并同步自身窗口，修复首页退出残影。
-- 采用官方签名的嵌入式 GUI 运行时；修复完全退出后启动和正常退出。
+- Reclaim unused inference memory while keeping models ready.
+- Limit total runtime cache and temporary storage; add periodic cleanup and storage settings.
+- Hide and synchronize application windows before capture to prevent afterimages.
+- Use an officially signed embedded GUI runtime and improve fully exited startup and shutdown.
 
-## 近期体验更新
+## Earlier experience updates
 
-- 简洁白色首页、红色截图光标。
-- 半透明点阵进度与明确的处理、AI 增强状态。
-- 保留截图原字形，文字区域明亮，非文字区域变暗，黄色高亮选择。
-- 多段拖选，不再绑定 Shift。
-- 自动增强开关与手动增强独立。
+- Minimal white homepage and a red capture cursor.
+- Translucent progress dots and clear recognition and AI status.
+- Preserve original image text, brighten recognized regions, dim other regions, and highlight selections in yellow.
+- Support multiple selections without a Shift binding.
+- Keep manual enhancement independent of automatic enhancement.

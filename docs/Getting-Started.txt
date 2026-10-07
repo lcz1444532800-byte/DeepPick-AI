@@ -1,0 +1,20 @@
+DeepPick AI 1.2.3 — Windows x64
+Developer:Chunze Liu
+
+1. Extract the complete release ZIP to D:\.
+2. Confirm the entry is D:\DeepPickAI\DeepPickAI.exe.
+3. Double-click DeepPickAI.exe. No Python or separate model setup is needed.
+4. Press Ctrl + Space, capture an area, drag to select text, and press Ctrl + Enter.
+
+Local OCR works offline without a key. Optional AI: Settings → DeepSeek → enter
+your own API key → Test connection → Save. AI uploads the selected content
+and uses your API balance. Manual AI works with automatic enhancement off.
+
+Start with Windows is enabled by default; disable it in Settings → General.
+Closing the homepage keeps the app in the tray. Right-click the tray → Exit
+to quit. The application requires Windows 10/11 x64 and a D: drive.
+
+Open User-Guide.html for the full offline tutorial and 24 FAQs.
+Desktop shortcut: right-click EXE → Send to → Desktop (create shortcut).
+Do not run inside the ZIP or copy out only the EXE.
+Share the original release ZIP, not your used installation folder.

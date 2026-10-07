@@ -38,7 +38,7 @@ class OcrService(QObject):
         self.restart_count = 0
         self.timer = QTimer(self)
         self.timer.setSingleShot(True)
-        self.timer.timeout.connect(lambda:self._fail('识别超时，请缩小区域后重试。'))
+        self.timer.timeout.connect(lambda:self._fail('Recognition timed out. Try a smaller capture.'))
         self.recovery = QTimer(self)
         self.recovery.setSingleShot(True)
         self.recovery.timeout.connect(self.start)
@@ -65,7 +65,7 @@ class OcrService(QObject):
         self.timer.start(90000)
 
     def recognize(self, capture):
-        if self.pending: raise RuntimeError('已有识别任务进行中。')
+        if self.pending: raise RuntimeError('A recognition task is already running.')
         started = time.perf_counter()
         image = capture.image.convertToFormat(QImage.Format.Format_RGB888)
         request_id = uuid.uuid4().hex
@@ -103,7 +103,7 @@ class OcrService(QObject):
         if self.process is None: return
         self.buffer += bytes(self.process.readAllStandardOutput())
         if len(self.buffer)>8*1024*1024:
-            self._fail('OCR 返回数据过大，请缩小截图区域。')
+            self._fail('The OCR response is too large. Capture a smaller area.')
             return
         while b'\n' in self.buffer:
             line,self.buffer = self.buffer.split(b'\n',1)
@@ -135,18 +135,18 @@ class OcrService(QObject):
                     self.completed.emit(reading_order(blocks))
             except Exception:
                 logging.exception('OCR protocol rejected')
-                self._fail('OCR 数据格式异常，请重试。')
+                self._fail('Invalid OCR response. Please try again.')
                 return
 
     def _process_error(self, error):
-        if not self.stopping: self._fail('无法启动 OCR 引擎，请检查 app 文件夹。')
+        if not self.stopping: self._fail('Could not start OCR. Check the app folder.')
 
     def _finished(self, code, status):
         process = self.process
         self.process = None
         self.available = False
         if process: process.deleteLater()
-        if not self.stopping: self._fail('OCR 引擎已重启，请重新截图。')
+        if not self.stopping: self._fail('OCR restarted. Capture again.')
 
     def _fail(self, message):
         self.stop()

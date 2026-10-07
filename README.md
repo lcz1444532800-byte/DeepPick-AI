@@ -1,81 +1,81 @@
 # DeepPick AI
 
-**受 Mac Live Text 启发，为 Windows 做的一款屏幕文字提取工具。**
+**A Live Text-inspired screen text tool for Windows.**
 
-按下快捷键 → 框选屏幕 → 拖动选字 → 一键复制。
+Capture an area. Select its text. Copy what you need.
 
-[下载 Windows 版](https://github.com/lcz1444532800-byte/DeepPick-AI/releases/latest) · [完整教程与常见问题](docs/使用说明.md)
+[Download for Windows](https://github.com/lcz1444532800-byte/DeepPick-AI/releases/latest) · [User guide & FAQ](docs/User-Guide.md)
 
-![DeepPick AI 首页](docs/images/home.png)
+![DeepPick AI homepage](docs/images/home.png)
 
-## 能做什么
+## Features
 
-- 在截图原画面上选择文字，保留原字形，选中文字显示黄色高亮。
-- 多次拖动追加选择，按阅读顺序复制。
-- 使用随包提供的 PaddleOCR PP-OCRv4 模型进行本地识别，离线可用。
-- 可接入自己的 **DeepSeek API**，进行校正、表格恢复、公式优化、翻译、总结和解释。
-- 自动增强可开启或关闭；手动 AI 增强独立于自动开关。
-- 托盘后台运行、可修改快捷键、最近 20 次历史与缓存自动清理。
+- Select text on the original captured image, with yellow highlights and no redrawn text overlay.
+- Drag again to add another passage, then copy in reading order.
+- Recognize text offline using bundled PaddleOCR PP-OCRv4 models and ONNX Runtime.
+- Connect your own **DeepSeek API** for corrections, table recovery, formulas, translation, summaries, and explanations.
+- Enable or disable automatic enhancement. Manual enhancement works independently of that switch.
+- Customize shortcuts, run in the system tray, keep the last 20 results, and automatically clean caches.
 
-## 开始使用
+## Quick start
 
-适用 **Windows 10 / 11 x64**。当前版本需要 **D 盘**，建议预留 1 GB 磁盘空间和 2 GB 可用内存。
+**Windows 10 / 11 x64. A D: drive is required.** Allow at least 1 GB of free disk space and 2 GB of available memory.
 
-1. 在 [Releases](https://github.com/lcz1444532800-byte/DeepPick-AI/releases/latest) 下载 **分享版 ZIP**。GitHub 自动生成的 “Source code” 是源码，不是可直接使用的软件包。
-2. 完整解压到 **D:\\**，使程序位于 **D:\\DeepPickAI\\DeepPickAI.exe**。
-3. 双击 **DeepPickAI.exe**。不需要安装 Python、下载模型或打开命令行。
+1. Download **DeepPickAI-1.2.3-Windows-x64.zip** from [Releases](https://github.com/lcz1444532800-byte/DeepPick-AI/releases/latest).
+2. Extract everything to `D:\`, producing `D:\DeepPickAI\DeepPickAI.exe`.
+3. Double-click **DeepPickAI.exe**. No Python installation, command line, or separate model download is needed.
 
-不要在压缩包内运行，也不要只取出单独一个 EXE。
+Choose the Windows ZIP rather than GitHub's automatically generated **Source code** archives. Keep every bundled component together; do not run inside the ZIP or copy out only the EXE.
 
-| 操作 | 默认快捷键 |
+| Action | Default shortcut |
 |---|---|
-| 开始框选 | Ctrl + Space |
-| 复制选中文字 | Ctrl + Enter |
-| 关闭选区 | Esc / 鼠标右键 |
-| 全选文字 | Ctrl + A |
+| Capture an area | Ctrl + Space |
+| Copy selected text | Ctrl + Enter |
+| Cancel or close the selection | Esc / right-click |
+| Select all recognized text | Ctrl + A |
 
-多段选择直接再次拖动即可，Shift 无特殊作用。Ctrl + Space 与输入法冲突时，可在设置中修改。
+Drag again to select multiple passages. Shift has no special function. Change the capture shortcut in Settings if it conflicts with your input method or another app.
 
-桌面入口：右键 EXE → 显示更多选项 → 发送到 → 桌面快捷方式。
+Create a desktop shortcut in Windows Explorer: right-click the EXE → Show more options → Send to → Desktop (create shortcut).
 
-关闭首页后继续在托盘运行，彻底退出请右键托盘图标 → 退出。**开机自启默认开启**，可在设置 → 常规关闭。
+Closing the homepage keeps the app running in the tray. Right-click the tray icon and choose **Exit** to quit. **Start with Windows is enabled by default** and can be disabled in Settings.
 
-## DeepSeek 增强 · 可选
+## Optional DeepSeek enhancement
 
-在 **设置 → DeepSeek** 输入自己的 API Key，测试连接后保存。本地识别不需要 Key；未配置 Key 时不会调用 AI。
+Enter your own API key in **Settings → DeepSeek**, test the connection, and save. Local OCR does not need a key; without one, the app makes no AI requests.
 
-配置 Key 后，首页自动增强可对低质量识别自动请求 AI。截图后也可手动点击 **AI 增强**，即使自动开关关闭也可使用。
+With a saved key, automatic enhancement can improve low-confidence results. Manual **AI enhance** works after a capture even when automatic enhancement is off. The toolbar shows whether this capture has actually been enhanced.
 
-AI 请求会上传本次选区图像和识别文字，并使用自己的 DeepSeek API 额度。连接测试成功不代表实际图像调用已经通过。需要离线处理或不上传截图时，使用本地 OCR，关闭自动增强并不主动点击 AI 功能。
+AI uploads the selected screenshot and recognized text to DeepSeek and uses your API balance. A successful connection test does not verify a paid image request. For offline processing, disable automatic enhancement and do not request manual AI actions.
 
-密钥隐藏显示，配置加密保存在 D 盘；历史文字与主动导出的文件由用户管理。分享包不包含开发者的密钥、配置、历史或截图。请转发原始 Release 包，避免分享使用后的安装目录。
+Keys are hidden in the interface and stored in encrypted configuration on D:. Releases contain no developer key, personal settings, recognition history, or screenshots. Share the original release ZIP instead of your used installation folder.
 
-## 存储与说明
+## Storage
 
-应用、模型和运行数据都放在 D 盘。开机启动仅在 Windows 实际启动文件夹创建本产品快捷方式，该文件夹可能位于 C 盘。
+Application files, models, and runtime data stay on D:. The startup shortcut uses Windows' actual Startup folder, which may be on C:.
 
-缓存与临时文件合计默认上限 128 MB，每 5 分钟自动清理；缓存超过 7 天移除，日志合计最多 50 MB。模型保持预热以保证下一次响应，闲置时回收多余工作内存。
+Cache and temporary files share a default **128 MB** limit. Cleanup runs every five minutes; caches expire after seven days, and logs are limited to 50 MB. Models stay warm for responsiveness while unused inference memory is reclaimed.
 
-更完整的安装、AI 配置、更新、卸载和 **24 个常见问题**见 [使用说明](docs/使用说明.md)。下载包内有可离线打开的 HTML 教程，软件首页也可打开。
+The [user guide](docs/User-Guide.md) covers installation, AI setup, updates, removal, and **24 FAQs**. An offline HTML guide is included in the ZIP and can be opened from the homepage.
 
-## 源码与运行组件
+## Source and runtime
 
-`app/source` 为模块化应用源码；`app/runtime` 在本仓库仅包含启动脚本，不包含大型 DLL 或运行库。运行组件和模型随 Release 提供。
+`app/source` contains the modular application. This repository's `app/runtime` contains startup scripts and provenance metadata. The complete runtime and OCR models are included in release downloads.
 
-当前发布入口使用未修改的 Python 官方嵌入式 GUI 运行时，保留其自身签名；应用源码没有独立发行签名。不同硬件、多屏混合缩放和安全策略仍需按实际环境验证。
+The executable uses an unmodified, officially signed Python embedded GUI runtime. That signature belongs to the runtime; application source has no separate publisher signature. Other hardware, mixed-DPI displays, and enterprise policies still need wider testing.
 
-开发与发布结构见 [开发说明](app/source/开发说明.md)。普通使用者直接下载 Release 即可。
+See [development notes](DEVELOPMENT.md) for the structure and release process.
 
-## 反馈
+## Feedback
 
-遇到问题可在 [Issues](https://github.com/lcz1444532800-byte/DeepPick-AI/issues) 说明 Windows 版本、屏幕缩放、操作步骤和错误提示。截图请去掉敏感内容，不要提供 API Key、config 文件夹或个人识别历史。
+Open an [issue](https://github.com/lcz1444532800-byte/DeepPick-AI/issues) with your Windows version, display scaling, reproduction steps, and error message. Remove sensitive content from screenshots. Never attach API keys, your `config` folder, or private recognition history.
 
-## 授权与致谢
+## Licensing and acknowledgments
 
-原创代码尚未指定开源许可证。第三方源码、模型及组件分别遵循其原有许可证，详见 [第三方说明](THIRD_PARTY_NOTICES.md)；Release 中附有许可证文本。
+An open-source license has not yet been selected for the original application code. Third-party components retain their respective licenses; see [notices](THIRD_PARTY_NOTICES.md). License texts are included with releases.
 
-本项目参考 macOS Live Text 的取字体验，与 Apple 无关联，不包含 Apple 实现。离线 OCR 来自 PaddleOCR / RapidOCR 提供的模型，运行时使用 ONNX Runtime；界面使用 PySide6。
+Inspired by macOS Live Text. This project is not affiliated with Apple and does not include Apple's implementation. Local OCR uses PaddleOCR models distributed through RapidOCR, ONNX Runtime, and a PySide6 interface.
 
-希望这个小工具能让大家用 Windows 时也更方便地取字。
+A small tool I built to make extracting screen text on Windows more convenient.
 
 Developer:Chunze Liu

@@ -58,7 +58,7 @@ class Predictor:
         from paddle import inference
         model, params = folder / "inference.pdmodel", folder / "inference.pdiparams"
         if not model.is_file() or not params.is_file():
-            raise RuntimeError("离线 OCR 模型缺失，请恢复 models 文件夹后重试。")
+            raise RuntimeError("Offline OCR models are missing. Restore the models folder and try again.")
         # Paddle's C++ file loader cannot open some Chinese Windows paths.
         # Loading bytes also works when the portable package is moved on D:.
         self.model_bytes = model.read_bytes()
@@ -136,14 +136,14 @@ class PaddleEngine:
         # imdecode, unlike cv2.imread, supports non-ASCII Windows paths.
         image = cv2.imdecode(np.fromfile(str(path), dtype=np.uint8), cv2.IMREAD_COLOR)
         if image is None:
-            raise RuntimeError("截图文件无法读取，请重新截图。")
+            raise RuntimeError("Could not read the capture. Capture again.")
         return self.recognize_array(image)
 
     def recognize_array(self, image):
         image, offset_x, offset_y = self._trim_border(image)
         h, w = image.shape[:2]
         if h*w > 40_000_000:
-            raise RuntimeError("截图过大，请分成多个区域识别。")
+            raise RuntimeError("The capture is too large. Recognize smaller areas separately.")
         ratio = min(1., 1920/max(h,w))
         dh = max(32, round(h*ratio/32)*32)
         dw = max(32, round(w*ratio/32)*32)
@@ -163,7 +163,7 @@ class PaddleEngine:
                 continue
             candidates.append((poly, self.crop(image, poly)))
         if len(candidates) > 2000:
-            raise RuntimeError("文字区域过多，请缩小截图范围。")
+            raise RuntimeError("Too many text regions. Capture a smaller area.")
         # Angle classification keeps upside-down text usable.
         for start in range(0,len(candidates),8):
             batch = candidates[start:start+8]
@@ -214,7 +214,7 @@ class PaddleEngine:
         """Remove only near-uniform exterior padding, keeping a margin around ink."""
         h,w = image.shape[:2]
         if h*w > 40_000_000:
-            raise RuntimeError('截图过大，请分成多个区域识别。')
+            raise RuntimeError('The capture is too large. Recognize smaller areas separately.')
         edge = np.concatenate((image[0],image[-1],image[:,0],image[:,-1]))
         color = np.median(edge,axis=0)
         difference = np.max(np.abs(edge.astype(np.int16)-color),axis=1)

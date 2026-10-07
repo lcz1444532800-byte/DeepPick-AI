@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         header = QHBoxLayout()
         header.addWidget(label("DeepPick AI", "Title"))
         header.addStretch()
-        for title, action in (("历史记录", self.history_requested.emit), ("设置", self.settings_requested.emit)):
+        for title, action in (("History", self.history_requested.emit), ("Settings", self.settings_requested.emit)):
             item = button(title, action)
             item.setObjectName("Quiet")
             header.addWidget(item)
@@ -69,13 +69,13 @@ class MainWindow(QMainWindow):
         capture_column.addStretch()
         self.shortcut = label("Ctrl + Space", "Shortcut")
         capture_column.addWidget(self.shortcut)
-        self.capture_button = button("开始截图", self.capture_requested.emit, True)
+        self.capture_button = button("Capture", self.capture_requested.emit, True)
         self.capture_button.setMinimumHeight(60)
         capture_column.addWidget(self.capture_button)
-        self.enhance = QCheckBox("自动增强 · 可选")
+        self.enhance = QCheckBox("Auto enhance · Optional")
         self.enhance.toggled.connect(self.auto_enhance_changed.emit)
         capture_column.addWidget(self.enhance)
-        self.api = label("未配置 API Key", "Muted")
+        self.api = label("API key not configured", "Muted")
         capture_column.addWidget(self.api)
         self.state = label("", "Status", True)
         self.state.hide()
@@ -87,15 +87,15 @@ class MainWindow(QMainWindow):
         guide_layout = QVBoxLayout(guide)
         guide_layout.setContentsMargins(30, 28, 30, 28)
         guide_layout.setSpacing(20)
-        guide_layout.addWidget(label("使用说明", "GuideTitle"))
+        guide_layout.addWidget(label("Quick guide", "GuideTitle"))
         self.guide_keys = []
-        for number, text, key in (("01", "框选屏幕区域", "Ctrl + Space"),
-                                  ("02", "拖动选择文字，可多次追加", ""),
-                                  ("03", "复制选中文字", "Ctrl + Enter")):
+        for number, text, key in (("01", "Capture an area", "Ctrl + Space"),
+                                  ("02", "Drag to select; repeat to add", ""),
+                                  ("03", "Copy selected text", "Ctrl + Enter")):
             row = QVBoxLayout()
             line = QHBoxLayout()
             line.addWidget(label(number, "StepNumber"))
-            line.addWidget(label(text), 1)
+            line.addWidget(label(text, wrap=True), 1)
             row.addLayout(line)
             if key:
                 key_row = QHBoxLayout()
@@ -106,9 +106,9 @@ class MainWindow(QMainWindow):
                 key_row.addStretch()
                 row.addLayout(key_row)
             guide_layout.addLayout(row)
-        self.cancel_hint = label("Esc 关闭 · 右键关闭", "Muted")
+        self.cancel_hint = label("Esc or right-click to close", "Muted")
         guide_layout.addWidget(self.cancel_hint)
-        full_guide = button("完整教程与常见问题", self.open_guide)
+        full_guide = button("User guide / FAQ", self.open_guide)
         full_guide.setObjectName("Quiet")
         guide_layout.addWidget(full_guide)
         body.addWidget(guide, 6)
@@ -119,9 +119,9 @@ class MainWindow(QMainWindow):
         layout.addWidget(credit)
 
     def open_guide(self):
-        guide = self.paths.root / "使用说明.html"
+        guide = self.paths.root / "User-Guide.html"
         if not guide.is_file() or not QDesktopServices.openUrl(QUrl.fromLocalFile(str(guide))):
-            QMessageBox.information(self, "使用说明", "请打开程序目录中的使用说明.html。")
+            QMessageBox.information(self, "Quick guide", "Open User-Guide.html in the application folder.")
 
     def about(self):
         QMessageBox.information(self, "DeepPick AI", "DeepPick AI 1.2.3\nDeveloper:Chunze Liu")
@@ -136,11 +136,11 @@ class MainWindow(QMainWindow):
         self.shortcut.setText(key(settings.capture_key))
         self.guide_keys[0].setText(key(settings.capture_key))
         self.guide_keys[1].setText(key(settings.copy_key))
-        self.cancel_hint.setText(f"{key(settings.cancel_key)} 关闭 · 右键关闭")
+        self.cancel_hint.setText(f"{key(settings.cancel_key)} or right-click to close")
         self.enhance.blockSignals(True)
         self.enhance.setChecked(settings.auto_enhance)
         self.enhance.blockSignals(False)
-        self.api.setText("" if settings.api_key else "未配置 API Key")
+        self.api.setText("" if settings.api_key else "API key not configured")
         self.api.setVisible(settings.auto_enhance and not settings.api_key)
 
     def closeEvent(self, event):
@@ -159,8 +159,8 @@ class SettingsDialog(QDialog):
     def __init__(self, settings, startup_path, parent=None):
         super().__init__(parent)
         self.original = settings
-        self.setWindowTitle("DeepPick AI · 设置")
-        self.resize(620, 490)
+        self.setWindowTitle("DeepPick AI · Settings")
+        self.resize(720, 510)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(26, 24, 26, 24)
         tabs = QTabWidget()
@@ -180,14 +180,14 @@ class SettingsDialog(QDialog):
         self.threshold.setRange(.1, 1.)
         self.threshold.setSingleStep(.05)
         self.threshold.setValue(settings.threshold)
-        row.addRow("自动增强阈值", self.threshold)
+        row.addRow("Enhancement threshold", self.threshold)
         form.addLayout(row)
-        self.test_button = button("测试连接", self._test)
+        self.test_button = button("Test connection", self._test)
         form.addWidget(self.test_button)
         self.test_status = label("", "Muted", True)
         form.addWidget(self.test_status)
         form.addStretch()
-        form.addWidget(label("AI 增强会上传本次截图。", "Muted"))
+        form.addWidget(label("AI uploads this capture.", "Muted"))
         tabs.addTab(recognition, "DeepSeek")
         keys = QWidget()
         key_layout = QVBoxLayout(keys)
@@ -199,27 +199,27 @@ class SettingsDialog(QDialog):
         self.cancel_key = QKeySequenceEdit(QKeySequence(settings.cancel_key))
         for editor in (self.capture_key, self.copy_key, self.cancel_key):
             editor.setMaximumSequenceLength(1)
-        key_form.addRow("开始截图", self.capture_key)
-        key_form.addRow("复制文字", self.copy_key)
-        key_form.addRow("关闭", self.cancel_key)
+        key_form.addRow("Capture", self.capture_key)
+        key_form.addRow("Copy text", self.copy_key)
+        key_form.addRow("Close", self.cancel_key)
         key_layout.addLayout(key_form)
-        key_layout.addWidget(button("恢复默认", self._reset_keys))
+        key_layout.addWidget(button("Restore defaults", self._reset_keys))
         key_layout.addStretch()
-        tabs.addTab(keys, "快捷键")
+        tabs.addTab(keys, "Shortcuts")
         general = QWidget()
         general_layout = QVBoxLayout(general)
         general_layout.setContentsMargins(4, 24, 4, 12)
         general_layout.setSpacing(24)
-        self.history = QCheckBox("保存最近 20 次识别")
+        self.history = QCheckBox("Save the last 20 results")
         self.history.setChecked(settings.history_enabled)
-        self.hidden = QCheckBox("启动后在后台运行")
+        self.hidden = QCheckBox("Start in the background")
         self.hidden.setChecked(settings.start_hidden)
-        self.autostart = QCheckBox("开机自启")
+        self.autostart = QCheckBox("Start with Windows")
         self.autostart.setChecked(settings.autostart)
         for item in (self.history, self.hidden, self.autostart):
             general_layout.addWidget(item)
         general_layout.addStretch()
-        tabs.addTab(general, "常规")
+        tabs.addTab(general, "General")
         storage = QWidget()
         storage_layout = QVBoxLayout(storage)
         storage_layout.setContentsMargins(4, 24, 4, 12)
@@ -229,30 +229,30 @@ class SettingsDialog(QDialog):
         self.cache_limit.setRange(32, 4096)
         self.cache_limit.setSuffix(" MB")
         self.cache_limit.setValue(settings.cache_limit_mb)
-        storage_form.addRow("缓存上限（含临时文件）", self.cache_limit)
+        storage_form.addRow("Cache limit (including temporary files)", self.cache_limit)
         storage_layout.addLayout(storage_form)
-        self.storage_usage = label("统计中…", "Muted", True)
+        self.storage_usage = label("Calculating…", "Muted", True)
         storage_layout.addWidget(self.storage_usage)
-        self.clear_cache_button = button("清理缓存", self.clear_cache_requested.emit)
+        self.clear_cache_button = button("Clear cache", self.clear_cache_requested.emit)
         storage_layout.addWidget(self.clear_cache_button)
         storage_layout.addStretch()
-        storage_layout.addWidget(label("每 5 分钟清理 · 缓存保留 7 天 · 日志最多 50 MB", "Muted", True))
-        tabs.addTab(storage, "存储")
+        storage_layout.addWidget(label("Clean every 5 min · Cache expires after 7 days · Logs: 50 MB max", "Muted", True))
+        tabs.addTab(storage, "Storage")
         self.error = label("", "Status", True)
         layout.addWidget(self.error)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
-        buttons.button(QDialogButtonBox.StandardButton.Save).setText("保存")
-        buttons.button(QDialogButtonBox.StandardButton.Cancel).setText("取消")
+        buttons.button(QDialogButtonBox.StandardButton.Save).setText("Save")
+        buttons.button(QDialogButtonBox.StandardButton.Cancel).setText("Cancel")
         buttons.accepted.connect(self._save)
         buttons.rejected.connect(self.reject)
         layout.addWidget(buttons)
 
     def _test(self):
         if not self.api_key.text().strip():
-            self.test_status.setText("请填写 API Key")
+            self.test_status.setText("Enter an API key")
             return
         self.test_button.setEnabled(False)
-        self.test_status.setText("连接中…")
+        self.test_status.setText("Connecting…")
         self.test_requested.emit(self.api_key.text().strip())
 
     def test_finished(self, text):
@@ -277,10 +277,10 @@ class HistoryDialog(QDialog):
     def __init__(self, store, parent=None):
         super().__init__(parent)
         self.store = store
-        self.setWindowTitle("DeepPick AI · 历史记录")
+        self.setWindowTitle("DeepPick AI · History")
         self.resize(720,590)
         layout = QVBoxLayout(self)
-        layout.addWidget(label("最近 20 次","Subtitle"))
+        layout.addWidget(label("Last 20 results","Subtitle"))
         self.list = QListWidget()
         self.list.setMaximumHeight(210)
         layout.addWidget(self.list)
@@ -288,10 +288,10 @@ class HistoryDialog(QDialog):
         self.text.setReadOnly(True)
         layout.addWidget(self.text)
         actions = QHBoxLayout()
-        actions.addWidget(button("复制文字",self.copy))
-        actions.addWidget(button("删除所选",self.remove))
+        actions.addWidget(button("Copy text",self.copy))
+        actions.addWidget(button("Delete selected",self.remove))
         actions.addStretch()
-        actions.addWidget(button("清空历史",self.clear))
+        actions.addWidget(button("Clear history",self.clear))
         layout.addLayout(actions)
         self.list.currentRowChanged.connect(self.select)
         self.refresh()
@@ -305,7 +305,7 @@ class HistoryDialog(QDialog):
         if self.records:
             self.list.setCurrentRow(0)
         else:
-            self.text.setPlainText("暂无记录")
+            self.text.setPlainText("No saved results")
 
     def select(self,row):
         if 0 <= row < len(self.records):
@@ -324,7 +324,7 @@ class HistoryDialog(QDialog):
             self.refresh()
 
     def clear(self):
-        if self.records and QMessageBox.question(self,"清空历史","删除所有已保存的识别文字？") == QMessageBox.StandardButton.Yes:
+        if self.records and QMessageBox.question(self,"Clear history","Delete all saved recognition results?") == QMessageBox.StandardButton.Yes:
             self.store.clear()
             self.refresh()
 
@@ -335,60 +335,60 @@ class ResultDialog(QDialog):
 
     def __init__(self,text,blocks,ai_enabled,parent=None):
         super().__init__(parent)
-        self.setWindowTitle("DeepPick AI · 识别结果")
-        self.resize(820,650)
+        self.setWindowTitle("DeepPick AI · Results")
+        self.resize(1040,650)
         layout = QVBoxLayout(self)
-        self.heading = label("识别文字","Subtitle")
+        self.heading = label("Recognized text","Subtitle")
         layout.addWidget(self.heading)
         self.text = QPlainTextEdit(text)
         layout.addWidget(self.text)
         tasks = QHBoxLayout()
         self.ai_buttons = []
-        for title,task in (("AI 校正","enhance"),("恢复表格","table"),("优化公式","formula"),
-                            ("翻译","translate"),("总结","summary"),("解释","explain")):
+        for title,task in (("AI correct","enhance"),("Restore table","table"),("Improve formulas","formula"),
+                            ("Translate","translate"),("Summarize","summary"),("Explain","explain")):
             widget = button(title,lambda checked=False,t=task:self.ai_requested.emit(t))
             widget.setEnabled(ai_enabled)
             self.ai_buttons.append(widget)
             tasks.addWidget(widget)
         layout.addLayout(tasks)
-        self.note = label("AI 会上传本次截图。" if ai_enabled else "在设置中添加 API Key。","Muted",True)
+        self.note = label("AI uploads this capture." if ai_enabled else "Add an API key in Settings.","Muted",True)
         layout.addWidget(self.note)
         actions = QHBoxLayout()
-        actions.addWidget(button("返回选区",self.overlay_requested.emit))
+        actions.addWidget(button("Back to selection",self.overlay_requested.emit))
         actions.addStretch()
-        actions.addWidget(button("复制全部",self.copy,True))
-        actions.addWidget(button("导出文本",self.export))
+        actions.addWidget(button("Copy all",self.copy,True))
+        actions.addWidget(button("Export text",self.export))
         layout.addLayout(actions)
 
     def set_ai_enabled(self, enabled):
         for item in self.ai_buttons:
             item.setEnabled(enabled)
-        self.note.setText("AI 会上传本次截图。" if enabled else "在设置中添加 API Key。")
+        self.note.setText("AI uploads this capture." if enabled else "Add an API key in Settings.")
 
     def copy(self):
         from PySide6.QtWidgets import QApplication
         QApplication.clipboard().setText(self.text.toPlainText())
-        self.note.setText("已复制")
+        self.note.setText("Copied")
 
     def export(self):
         from PySide6.QtWidgets import QInputDialog
         from .storage import atomic_write
         import time
-        name, accepted = QInputDialog.getText(self,"导出文字","文件名（保存在 D:\\DeepPickAI\\output）：",
-                                             text="识别文字-"+time.strftime("%Y%m%d-%H%M%S")+".txt")
+        name, accepted = QInputDialog.getText(self,"Export text","Filename (saved in D:\\DeepPickAI\\output):",
+                                             text="Recognized-text-"+time.strftime("%Y%m%d-%H%M%S")+".txt")
         if not accepted or not name.strip():
             return
         name = name.strip()
         if any(c in name for c in '<>:"/\\|?*') or name in (".","..") or name.endswith(("."," ")):
-            QMessageBox.warning(self,"文件名无效","请输入不包含路径和特殊字符的文件名。")
+            QMessageBox.warning(self,"Invalid filename","Enter a filename without a path or special characters.")
             return
         if not name.lower().endswith(".txt"):
             name += ".txt"
         target = Path("D:/DeepPickAI/output")/name
-        if target.exists() and QMessageBox.question(self,"覆盖文件","同名文件已存在，是否覆盖？") != QMessageBox.StandardButton.Yes:
+        if target.exists() and QMessageBox.question(self,"Replace file","This file already exists. Replace it?") != QMessageBox.StandardButton.Yes:
             return
         try:
             atomic_write(target,self.text.toPlainText().encode("utf-8-sig"))
-            self.note.setText("已导出")
+            self.note.setText("Exported")
         except OSError:
-            QMessageBox.warning(self,"导出失败","请检查文件夹权限或磁盘剩余空间。")
+            QMessageBox.warning(self,"Export failed","Check folder permissions and free disk space.")

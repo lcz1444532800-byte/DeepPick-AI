@@ -24,22 +24,22 @@ class Block:
     @classmethod
     def from_dict(cls, value, max_width, max_height):
         if not isinstance(value, dict) or not isinstance(value.get("text"), str):
-            raise ValueError("文字块格式不正确")
+            raise ValueError("Invalid text block format")
         text = value["text"][:10000]
         nums = [float(value[k]) for k in ("x", "y", "width", "height", "confidence")]
         if not all(math.isfinite(v) for v in nums):
-            raise ValueError("文字坐标不是有限数值")
+            raise ValueError("Text coordinates must be finite")
         x, y, w, h, confidence = nums
         if not text or w <= 0 or h <= 0 or x < 0 or y < 0 or x >= max_width or y >= max_height:
-            raise ValueError("文字坐标超出截图")
+            raise ValueError("Text coordinates exceed the capture")
         w, h = min(w, max_width-x), min(h, max_height-y)
         polygon = value.get("polygon", ())
         if polygon:
             if len(polygon) != 4 or any(len(p) != 2 for p in polygon):
-                raise ValueError("文字四边形无效")
+                raise ValueError("Invalid text polygon")
             polygon = tuple(tuple(float(v) for v in p) for p in polygon)
             if any(not math.isfinite(v) for p in polygon for v in p):
-                raise ValueError("文字四边形无效")
+                raise ValueError("Invalid text polygon")
             if any(px < 0 or py < 0 or px > max_width or py > max_height for px, py in polygon):
                 polygon = ()
         return cls(text, x, y, w, h, min(1., max(0., confidence)), polygon,

@@ -66,7 +66,7 @@ class Guid(ctypes.Structure):
 
 
 def _check_hresult(value):
-    if value < 0: raise OSError(f'Windows Shell 错误：0x{value & 0xffffffff:08X}')
+    if value < 0: raise OSError(f'Windows Shell error: 0x{value & 0xffffffff:08X}')
 
 
 def _method(pointer,index,*types):

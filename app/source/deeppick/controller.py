@@ -33,13 +33,13 @@ class ApiCheck(QThread):
                 response = client.get("https://api.deepseek.com/models",headers={"Authorization":"Bearer "+self.key})
                 if response.status_code == 200:
                     names = {m["id"] for m in response.json().get("data",[])}
-                    self.result.emit("连接成功" if "deepseek-flash" in names else "连接成功，图像模型暂不可用。")
+                    self.result.emit("Connected" if "deepseek-flash" in names else "Connected. The image model is currently unavailable.")
                 elif response.status_code == 401:
-                    self.result.emit("API Key 无效")
+                    self.result.emit("Invalid API key")
                 else:
-                    self.result.emit(f"连接失败（HTTP {response.status_code}）")
+                    self.result.emit(f"Connection failed (HTTP {response.status_code})")
         except Exception:
-            self.result.emit("连接失败，请检查网络。")
+            self.result.emit("Connection failed. Check your network.")
         finally:
             self.key = ""
 
@@ -99,8 +99,8 @@ class Controller(QObject):
         self.hotkey.activated.connect(self.begin_capture)
         self.tray = QSystemTrayIcon(icon,self)
         menu = QMenu()
-        for title,callback in (("开始截图",self.begin_capture),("打开 DeepPick AI",self.show_main),
-                               ("设置",self.open_settings),("历史记录",self.open_history)):
+        for title,callback in (("Capture",self.begin_capture),("Open DeepPick AI",self.show_main),
+                               ("Settings",self.open_settings),("History",self.open_history)):
             action = QAction(title,menu)
             action.triggered.connect(callback)
             menu.addAction(action)
@@ -108,7 +108,7 @@ class Controller(QObject):
         credit = QAction("Developer:Chunze Liu",menu)
         credit.setEnabled(False)
         menu.addAction(credit)
-        exit_action = QAction("退出",menu)
+        exit_action = QAction("Exit",menu)
         exit_action.triggered.connect(self.quit)
         menu.addAction(exit_action)
         self.tray.setContextMenu(menu)
@@ -195,7 +195,7 @@ class Controller(QObject):
 
     def _ocr_ready(self):
         if self.overlay and not self.overlay.ready:
-            self.overlay.set_processing("本地识别中…")
+            self.overlay.set_processing("Recognizing…")
         if not self.busy:
             self.main.set_status("")
 
@@ -205,7 +205,7 @@ class Controller(QObject):
             self.config.save(settings)
         except Exception:
             self.main.refresh(self.settings)
-            self.notify("设置保存失败，请检查磁盘空间。", True)
+            self.notify("Could not save settings. Check available disk space.", True)
             return
         self.settings = settings
         self.main.refresh(settings)
@@ -218,7 +218,7 @@ class Controller(QObject):
 
     def begin_capture(self):
         if self.busy or self.quit_pending:
-            self.notify("处理中…")
+            self.notify("Processing…")
             return
         if self.capture_window or self.capture_starting:
             return
@@ -258,7 +258,7 @@ class Controller(QObject):
         except Exception as error:
             logging.exception("Screen capture failed")
             self.capture_window = None
-            self.notify(str(error) or "屏幕捕获失败，请重试。",True)
+            self.notify(str(error) or "Capture failed. Please try again.",True)
         finally:
             restore_capture_sources(self.capture_hides)
             self.capture_hides = []
@@ -275,11 +275,11 @@ class Controller(QObject):
         self.result_ai_used = False
         self.busy = True
         self.main.capture_button.setEnabled(False)
-        self.notify("正在识别文字…")
+        self.notify("Recognizing text…")
         self.overlay = TextOverlay(capture, None, self.settings)
         self._bind_overlay()
         if not self.ocr.available:
-            self.overlay.set_processing("准备识别引擎…")
+            self.overlay.set_processing("Preparing OCR…")
         self.overlay.open()
         QTimer.singleShot(0, lambda current=capture:self._recognize_capture(current))
 
@@ -299,7 +299,7 @@ class Controller(QObject):
         if self.overlay:
             self.overlay.set_blocks(blocks)
             if not blocks:
-                self.overlay.state_text = '未识别到文字'
+                self.overlay.state_text = 'No text found'
                 self.overlay.toolbar.refresh(self.overlay)
         if blocks:
             self._present_result()
@@ -316,7 +316,7 @@ class Controller(QObject):
                 self.open_result()
                 self.main.set_status("")
                 return
-            self.notify("未识别到文字，请重新框选。",True)
+            self.notify("No text found. Capture another area.",True)
             return
         if save:
             self.save_history(source)
@@ -328,7 +328,7 @@ class Controller(QObject):
             try:
                 self.history.add(self.result_text,[b.to_dict() for b in self.blocks],source)
             except OSError:
-                self.notify("识别已完成，但历史记录保存失败，请检查磁盘空间。",True)
+                self.notify("Recognition completed, but history could not be saved. Check disk space.",True)
 
     def open_overlay(self):
         if not self.blocks or not self.capture:
@@ -364,14 +364,14 @@ class Controller(QObject):
 
     def copy(self,text):
         self.app.clipboard().setText(text)
-        self.notify("已复制")
+        self.notify("Copied")
 
     def _ocr_error(self,message):
         self.busy = False
         self.main.capture_button.setEnabled(True)
         if self.overlay and not self.overlay.ready:
             self.overlay.set_blocks([])
-            self.overlay.state_text = "识别失败 · 请重试"
+            self.overlay.state_text = "Recognition failed · Try again"
             self.overlay.toolbar.refresh(self.overlay)
         self.notify(message,True)
 
@@ -382,11 +382,11 @@ class Controller(QObject):
         if automatic and not self.settings.auto_enhance:
             return
         if not self._can_ai():
-            self.notify("请在设置中填写 API Key。",True)
+            self.notify("Add an API key in Settings.",True)
             return
         if self.busy or self.ai_job or not self.capture:
             if not automatic and self.ai_job:
-                self.notify("AI 增强中…")
+                self.notify("Enhancing with AI…")
             return
         self.ai_automatic = automatic
         self.ai_background = task == "enhance"
@@ -396,7 +396,7 @@ class Controller(QObject):
             self.busy = True
             self.main.capture_button.setEnabled(False)
         self.pending_task = task
-        self.notify("AI 增强中…")
+        self.notify("Enhancing with AI…")
         self.ai_job = AiJob(task,self.capture,list(self.blocks),self.settings)
         self.ai_job.completed.connect(self._ai_completed)
         self.ai_job.failed.connect(self._ai_failed)
@@ -426,7 +426,7 @@ class Controller(QObject):
             self.main.set_status("")
         if self.result_dialog:
             self.result_dialog.text.setPlainText(text)
-            self.result_dialog.heading.setText("识别文字 · 已 AI 增强")
+            self.result_dialog.heading.setText("Recognized text · AI enhanced")
 
     def _ai_failed(self,message):
         if not self.ai_job or self.ai_job.isInterruptionRequested() or self.ai_capture is not self.capture:
@@ -462,13 +462,13 @@ class Controller(QObject):
 
     def open_result(self):
         if not self.result_text and not self.blocks:
-            self.notify("请先截图")
+            self.notify("Capture an area first")
             return
         self.close_overlay()
         if self.result_dialog:
             self.result_dialog.close()
         self.result_dialog = ResultDialog(self.result_text,self.blocks,self._can_ai(),self.main)
-        self.result_dialog.heading.setText("识别文字 · "+("已 AI 增强" if self.result_ai_used else "未使用 AI"))
+        self.result_dialog.heading.setText("Recognized text · "+("AI enhanced" if self.result_ai_used else "Local OCR"))
         self._track_dialog("result_dialog",self.result_dialog)
         self.result_dialog.ai_requested.connect(self._start_ai)
         self.result_dialog.overlay_requested.connect(self._show_overlay_from_result)
@@ -482,7 +482,7 @@ class Controller(QObject):
 
     def open_settings(self):
         if self.busy:
-            self.notify("处理中…")
+            self.notify("Processing…")
             return
         self.close_overlay()
         if self.settings_dialog:
@@ -503,14 +503,14 @@ class Controller(QObject):
         try:
             sequences = [settings.capture_key,settings.copy_key,settings.cancel_key]
             if any(not x for x in sequences) or len(set(sequences)) != 3:
-                raise ValueError("快捷键不能为空或重复。")
+                raise ValueError("Shortcuts must be set and must be different.")
             # Validate before changing either active registration or persisted state.
             hotkey_parts(settings.capture_key)
             hotkey_parts(settings.copy_key)
             if settings.cancel_key not in ("Esc","Escape"):
                 hotkey_parts(settings.cancel_key)
             if any(c.isspace() for c in settings.api_key):
-                raise ValueError("API Key 中不能包含空格或换行。")
+                raise ValueError("The API key must not contain spaces or line breaks.")
             self.hotkey.register(settings.capture_key)
             apply_autostart(settings.autostart,self.paths.root / "DeepPickAI.exe",self.startup_path)
             self.config.save(settings)
@@ -525,12 +525,12 @@ class Controller(QObject):
         self.settings = settings
         self.main.refresh(settings)
         self.settings_dialog.accept()
-        self.notify("设置已保存")
+        self.notify("Settings saved")
         self._maintenance()
 
     def _test_api(self,key):
         if self.api_job:
-            self.settings_dialog.test_finished("连接测试中…")
+            self.settings_dialog.test_finished("Testing connection…")
             return
         self.api_job = ApiCheck(key)
         dialog = self.settings_dialog
@@ -568,7 +568,7 @@ class Controller(QObject):
         self.cleanup_clear_pending = True
         if self.settings_dialog:
             self.settings_dialog.clear_cache_button.setEnabled(False)
-            self.settings_dialog.storage_usage.setText("清理中…")
+            self.settings_dialog.storage_usage.setText("Cleaning…")
         self._maintenance()
 
     def _maintenance(self):
@@ -591,11 +591,11 @@ class Controller(QObject):
         if self.settings_dialog:
             self.settings_dialog.clear_cache_button.setEnabled(True)
             if usage is None:
-                text = "暂时无法清理，请重试"
+                text = "Cleanup is unavailable. Try again."
             else:
-                text = f"缓存与临时文件 {usage.runtime / 1048576:.1f} MB · 日志 {usage.logs / 1048576:.1f} MB"
+                text = f"Cache and temporary files: {usage.runtime / 1048576:.1f} MB · Logs: {usage.logs / 1048576:.1f} MB"
                 if usage.runtime > self.settings.cache_limit_mb * 1048576:
-                    text += "\n部分文件使用中，稍后重试"
+                    text += "\nSome files are in use. Cleanup will retry later."
             self.settings_dialog.storage_usage.setText(text)
 
     def _cleanup_finished(self):
@@ -621,7 +621,7 @@ class Controller(QObject):
         if self.cleanup_job:
             self.cleanup_job.requestInterruption()
         if self.ai_job or self.api_job:
-            self.notify("正在退出…")
+            self.notify("Exiting…")
             self.main.hide()
         self._finish_quit()
 

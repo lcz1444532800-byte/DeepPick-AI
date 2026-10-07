@@ -11,12 +11,12 @@ class Paths:
     def __init__(self, root: Path):
         self.root = root.resolve()
         if self.root.drive.upper() != "D:":
-            raise RuntimeError("DeepPick AI 必须放在 D 盘，建议使用 D:\\DeepPickAI。")
+            raise RuntimeError("DeepPick AI must be on D:. Recommended location: D:\\DeepPickAI.")
         for name in self.names:
             folder = self.root / name
             # Refuse redirected directories: cleanup must never follow junctions.
             if folder.exists() and (folder.is_symlink() or folder.resolve().parent != self.root):
-                raise RuntimeError(f"目录不能是指向其他位置的链接：{folder}")
+                raise RuntimeError(f"The directory must not redirect to another location: {folder}")
             folder.mkdir(parents=True, exist_ok=True)
             setattr(self, name, folder)
 

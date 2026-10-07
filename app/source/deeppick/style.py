@@ -3,7 +3,7 @@ from PySide6.QtGui import QColor, QIcon, QPainter, QPen, QPixmap
 
 
 STYLE = """
-QWidget { font-family:'Microsoft YaHei UI','Segoe UI'; font-size:14px; color:#202833; }
+QWidget { font-family:'Segoe UI',Arial; font-size:14px; color:#202833; }
 QMainWindow,QDialog { background:#ffffff; }
 QLabel#Title { font-size:32px; font-weight:600; color:#171e28; }
 QLabel#Subtitle { color:#5d6876; font-size:15px; }

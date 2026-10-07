@@ -1,0 +1,180 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DeepPick AI · User Guide & FAQ</title><style>
+:root{color-scheme:light;--ink:#17202b;--muted:#697484;--line:#e8ebef;--accent:#1c694e}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:34px}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.85 "Segoe UI",Arial,sans-serif}
+.shell{max-width:1160px;margin:auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:62px;padding:52px 36px 70px}
+nav{position:sticky;top:40px;align-self:start}nav .brand{font-weight:650;font-size:22px;margin-bottom:5px}.tag{color:var(--muted);font-size:13px;margin-bottom:26px}
+nav a{display:block;padding:7px 12px;margin:3px 0;border-radius:7px;color:#596474;font-size:14px;text-decoration:none}nav a:hover{background:#f2f7f4;color:var(--accent)}
+h1{font-size:46px;letter-spacing:-1.7px;line-height:1.1;margin:0 0 20px}h1+p{color:var(--muted);font-size:19px;margin-bottom:8px}h1+p+p{color:#89929e;font-size:13px;margin-top:0;margin-bottom:40px}
+h2{font-size:25px;line-height:1.4;margin:54px 0 22px;letter-spacing:-.5px;padding-top:15px;border-top:1px solid var(--line)}h3{font-size:18px}
+p{margin:15px 0}a{color:var(--accent);text-underline-offset:4px}strong{font-weight:650}li{padding-left:4px;margin:10px 0}ol{padding-left:24px}
+.table{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#f5f7f8;font-weight:650}tr:last-child td{border-bottom:0}
+code{background:#f4f6f7;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}details{border:1px solid var(--line);border-radius:10px;margin:11px 0;background:#fff}summary{cursor:pointer;font-size:16px;font-weight:600;padding:17px 19px;line-height:1.5}details[open]{border-color:#b9d5c7}details[open] summary{background:#f4f8f5;border-radius:10px 10px 0 0}.answer{padding:0 19px 8px;font-size:15px}
+.footer{margin-top:45px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+@media(max-width:850px){.shell{grid-template-columns:1fr;gap:28px;padding:28px 22px}nav{position:static}nav .links{display:flex;flex-wrap:wrap;gap:4px}nav a{padding:4px 8px;font-size:13px}.tag{margin-bottom:10px}h1{font-size:38px}h2{margin-top:35px}}
+@media print{nav{display:none}.shell{display:block;padding:0;max-width:none}body{font-size:11pt}h1{font-size:28pt}h2{page-break-after:avoid}details .answer{display:block!important}details{break-inside:avoid}a{color:#222}}
+</style></head><body><div class="shell"><nav><div class="brand">DeepPick AI</div><div class="tag">1.2.3 · Offline user guide</div><div class="links"><a href="#section-1">1. First launch</a><a href="#section-2">2. Capture, select, copy</a><a href="#section-3">3. Shortcuts</a><a href="#section-4">4. DeepSeek AI setup — optional</a><a href="#section-5">5. Tray and startup</a><a href="#section-6">6. History and storage</a><a href="#section-7">7. Folders</a><a href="#section-8">8. Update, share, remove</a><a href="#section-9">9. Frequently asked questions</a><a href="#section-10">10. Help and component notices</a></div></nav><main><h1>DeepPick AI</h1>
+<p>Screen text, ready to copy. Windows x64 · Version 1.2.3</p>
+<p>Developer:Chunze Liu</p>
+<h2 id="section-1">1. First launch</h2>
+<p>Requires Windows 10/11 x64 and a D: drive. Reserve at least 1 GB of disk space and 2 GB of available memory. A native ARM or 32-bit edition is not provided.</p>
+<ol>
+<li>Download <strong>DeepPickAI-1.2.3-Windows-x64.zip</strong> from the project&#x27;s Releases page.</li>
+<li>Right-click the ZIP, choose <strong>Extract All</strong>, and set the destination to <code>D:\</code>. The archive already includes the DeepPickAI folder; avoid a second nested folder.</li>
+<li>Double-click <code>D:\DeepPickAI\DeepPickAI.exe</code>. The homepage opens while offline OCR prepares in the background.</li>
+<li>No Python installation, model download, API key, or command line is required for local recognition.</li>
+</ol>
+<p>Keep <code>app</code>, <code>models</code>, <code>DeepPickAI._pth</code>, and the DLL files together. Do not launch inside the ZIP or copy out only the EXE.</p>
+<p>To create a desktop shortcut, right-click the EXE → Show more options → Send to → Desktop (create shortcut). Windows 10 shows Send to directly.</p>
+<h2 id="section-2">2. Capture, select, copy</h2>
+<ol>
+<li>Press <strong>Ctrl + Space</strong>, or click <strong>Capture</strong> on the homepage.</li>
+<li>Hold the left mouse button, drag around the desired area, and release. A red cursor remains visible on bright backgrounds.</li>
+<li>During recognition, the selected area retains its original image with a translucent animated dot field. The toolbar displays progress.</li>
+<li>When ready, recognized text regions stay bright while other regions dim. Original screenshot glyphs are preserved instead of being redrawn.</li>
+<li>Drag across text to select it. Selected text is highlighted yellow. Release, then drag again to add another passage; Shift is not required.</li>
+<li>Press <strong>Ctrl + Enter</strong> to copy the selected text and close the area. Paste it in another app with Ctrl + V.</li>
+</ol>
+<p>Copying follows reading order with reasonable spaces and line breaks. Review complex columns, merged cells, formulas, or important numbers in <strong>View text</strong>.</p>
+<p>View text opens editable results, <strong>Copy all</strong>, and <strong>Export text</strong>. Exports go to <code>D:\DeepPickAI\output</code> and are not automatically deleted.</p>
+<p>The selected area is a frozen capture. Press Esc or right-click to close it before interacting with the underlying window.</p>
+<h2 id="section-3">3. Shortcuts</h2>
+<div class="table"><table><thead><tr><th>Action</th><th>Default</th><th>Scope</th></tr></thead><tbody>
+<tr><td>Capture</td><td>Ctrl + Space</td><td>Global while the app runs</td></tr>
+<tr><td>Copy selected text</td><td>Ctrl + Enter</td><td>Text selection</td></tr>
+<tr><td>Cancel or close</td><td>Esc</td><td>Capture or text selection</td></tr>
+<tr><td>Select all</td><td>Ctrl + A</td><td>Text selection</td></tr>
+<tr><td>Close</td><td>Right-click</td><td>Capture or text selection</td></tr>
+<tr><td>Add another passage</td><td>Drag again</td><td>Keeps earlier selections</td></tr>
+</tbody></table></div>
+<p>Shift has no special function. Change capture, copy, and close shortcuts in <strong>Settings → Shortcuts</strong>. If Ctrl + Space conflicts with an input method, try an unused combination such as Ctrl + Alt + D.</p>
+<h2 id="section-4">4. DeepSeek AI setup — optional</h2>
+<p>Local OCR is free and works offline. AI needs an internet connection and your own DeepSeek API balance. A chat subscription or working web chat does not necessarily provide API credit.</p>
+<ol>
+<li>Sign in to the <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noopener">DeepSeek API console</a> and create your own API key.</li>
+<li>Confirm your API account has usable credit if you want AI features.</li>
+<li>Open <strong>Settings → DeepSeek</strong> and paste the complete key. Its characters are hidden.</li>
+<li>Click <strong>Test connection</strong>, then <strong>Save</strong>. The test checks the account endpoint; it does not submit an image or confirm a paid image request.</li>
+<li>Capture an area and use automatic or manual enhancement as needed.</li>
+</ol>
+<p>The app uses the official HTTPS endpoint and the image-capable <code>deepseek-flash</code> model. See the <a href="https://api-docs.deepseek.com/guides/vision/" target="_blank" rel="noopener">official image guide</a> and <a href="https://api-docs.deepseek.com/quick_start/pricing/" target="_blank" rel="noopener">pricing</a>.</p>
+<p><strong>Automatic enhancement:</strong> enabled by default on the homepage. A saved key and low-quality recognition trigger it. The default threshold is 0.82, configurable in Settings. Local results appear first. Without a key, only local OCR runs.</p>
+<p><strong>Manual enhancement:</strong> click <strong>AI enhance</strong> on the capture toolbar. It works whenever a key is saved, including when automatic enhancement is disabled. View text also provides <strong>AI correct</strong>, <strong>Restore table</strong>, <strong>Improve formulas</strong>, <strong>Translate</strong>, <strong>Summarize</strong>, and <strong>Explain</strong>. Translation targets English; summaries and explanations are in English.</p>
+<p><strong>Status:</strong> the toolbar distinguishes processing, success, failure, or cancellation. A configured key or enabled switch alone does not mean a capture was enhanced.</p>
+<p>AI sends this selected screenshot and its OCR text to DeepSeek and consumes your API balance. For private or offline processing, turn automatic enhancement off and do not request manual AI actions. Check important AI output for errors.</p>
+<h2 id="section-5">5. Tray and startup</h2>
+<p>Double-clicking the EXE opens the homepage. Closing its × button hides it, leaving the tray icon and global shortcut active.</p>
+<p>The tray icon may be under the taskbar&#x27;s hidden-icons arrow. Click it to open the homepage. Right-click for Capture, Settings, History, or <strong>Exit</strong>.</p>
+<p><strong>Start with Windows is enabled by default.</strong> Disable it in <strong>Settings → General</strong>. With <strong>Start in the background</strong> enabled, Windows startup shows the tray without opening the homepage; a manual launch opens the homepage.</p>
+<p>App files and data stay on D:. Startup creates only DeepPick AI.lnk in Windows&#x27; registered Startup folder, which may be on C:. No services, drivers, or security-policy changes are installed.</p>
+<h2 id="section-6">6. History and storage</h2>
+<p>History keeps the last 20 recognized texts. Use the homepage&#x27;s <strong>History</strong> button to view, copy, delete selected results, or clear history. Disable future saving in Settings → General; existing results are not deleted by that switch.</p>
+<p>History contains text, not saved screenshot images, and may still contain personal information. Delete records when appropriate.</p>
+<p><strong>Settings → Storage</strong> shows usage, the cache limit, and <strong>Clear cache</strong>. Cache and temporary files share a default 128 MB limit, configurable from 32 to 4096 MB.</p>
+<div class="table"><table><thead><tr><th>Data</th><th>Cleanup</th></tr></thead><tbody>
+<tr><td>Temporary files</td><td>At startup and after one hour of storage</td></tr>
+<tr><td>Cache</td><td>After seven days, and according to the combined size limit</td></tr>
+<tr><td>Scheduled cleanup</td><td>Startup, every five minutes, and when opening or saving Settings</td></tr>
+<tr><td>Logs</td><td>Total limit of 50 MB; older logs removed first</td></tr>
+<tr><td>History</td><td>Last 20 results, deletable by the user</td></tr>
+<tr><td>Exports</td><td>User-managed; not automatically removed</td></tr>
+</tbody></table></div>
+<p>Busy files and newly created temporary files are skipped and retried later. Runtime libraries and models are fixed components, not cache. OCR images are transferred through memory rather than saved continuously.</p>
+<p>Models remain warm to preserve responsiveness. Extra work memory is reclaimed when idle, but large captures can temporarily increase memory usage.</p>
+<h2 id="section-7">7. Folders</h2>
+<div class="table"><table><thead><tr><th>Inside D:\DeepPickAI</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>DeepPickAI.exe</td><td>Application entry</td></tr>
+<tr><td>DeepPickAI._pth, python3.dll, python311.dll</td><td>Required runtime files</td></tr>
+<tr><td>app</td><td>Application, runtime, and licenses</td></tr>
+<tr><td>models</td><td>Bundled offline OCR models</td></tr>
+<tr><td>config</td><td>Encrypted API key and settings</td></tr>
+<tr><td>logs</td><td>Runtime and error logs</td></tr>
+<tr><td>cache</td><td>Limited runtime cache</td></tr>
+<tr><td>temp</td><td>Temporary files</td></tr>
+<tr><td>history</td><td>Last 20 text results</td></tr>
+<tr><td>output</td><td>Exported text</td></tr>
+<tr><td>User-Guide.html</td><td>Offline guide and FAQ</td></tr>
+<tr><td>File-Checksums.json</td><td>Bundled file SHA-256 values</td></tr>
+</tbody></table></div>
+<p>Keep <code>settings.enc</code> and <code>vault.key</code> together. Configuration permissions are restricted to the current Windows user and SYSTEM. This does not protect against someone with your account or administrator access.</p>
+<h2 id="section-8">8. Update, share, remove</h2>
+<p><strong>Update:</strong> exit through the tray first, then replace the program components with the new full package. Keep your existing config, history, and output. Do not remove the configuration key or replace DLLs while the app is running.</p>
+<p><strong>Share:</strong> distribute the original release ZIP. Do not repackage a used installation, which may contain your configuration, history, or exports.</p>
+<p><strong>Remove:</strong> disable Start with Windows and save; exit through the tray; remove the desktop shortcut; keep any desired exports and delete D:\DeepPickAI. No system runtime uninstall is needed.</p>
+<h2 id="section-9">9. Frequently asked questions</h2>
+<details><summary>1. Do I need Python or separate model downloads?</summary><div class="answer">
+<p>No. Extract the complete Windows release ZIP and run its EXE. A lone EXE or the Source code archive is not a runnable installation.</p>
+</div></details>
+<details><summary>2. What if my computer has no D: drive?</summary><div class="answer">
+<p>This version requires D:. It does not install to C: or repartition drives automatically. A different installation layout is not currently supported.</p>
+</div></details>
+<details><summary>3. Why is the EXE missing, or why are runtime/models reported missing?</summary><div class="answer">
+<p>Check complete extraction and avoid <code>D:\DeepPickAI\DeepPickAI</code> nesting. The correct entry is <code>D:\DeepPickAI\DeepPickAI.exe</code>. Re-extract the original ZIP, preserving your existing config, history, and output if updating.</p>
+</div></details>
+<details><summary>4. What if Windows security blocks the app?</summary><div class="answer">
+<p>Check the original package, its checksum, your x64 Windows version, and extraction path. The official runtime retains its signature, but application code has no separate publisher signature. Do not disable system security. Ask your organization&#x27;s administrator about policy blocks and report the exact error without sending credentials.</p>
+</div></details>
+<details><summary>5. Why does the shortcut still work after I close the homepage?</summary><div class="answer">
+<p>The × button hides the homepage. To fully quit, right-click the tray icon and choose Exit. Look under hidden taskbar icons if necessary.</p>
+</div></details>
+<details><summary>6. Why is there no homepage after Windows starts?</summary><div class="answer">
+<p>Background startup is enabled by default. Look for the tray icon or try the capture shortcut. Disable Start in the background if you want the homepage at startup.</p>
+</div></details>
+<details><summary>7. Why does Ctrl + Space do nothing or switch input methods?</summary><div class="answer">
+<p>Try the homepage Capture button. If it works, change the shortcut in Settings → Shortcuts. Games, remote sessions, or secure desktops may not accept ordinary desktop hotkeys.</p>
+</div></details>
+<details><summary>8. Why does text not become selectable immediately?</summary><div class="answer">
+<p>The dot animation means recognition is running. First launch prepares models; large or dense captures and busy computers take longer. Capture the actual text area to reduce work. AI also depends on network and service response times.</p>
+</div></details>
+<details><summary>9. How do I know whether this capture used AI?</summary><div class="answer">
+<p>Read the toolbar status. Only a successful enhancement that was applied counts. An enabled switch or successful connection test is not an enhancement. Failed AI requests leave local results available.</p>
+</div></details>
+<details><summary>10. Can I use AI manually with automatic enhancement disabled?</summary><div class="answer">
+<p>Yes. Save an API key, then use AI enhance or the result window&#x27;s AI actions. Automatic enhancement controls only automatic requests.</p>
+</div></details>
+<details><summary>11. Can I use it without a key, and will the default switch charge me?</summary><div class="answer">
+<p>Local OCR works offline without a key, and no DeepSeek request is made without one. After saving a key, automatic triggers or manual AI actions may consume API credit.</p>
+</div></details>
+<details><summary>12. Why are AI buttons unavailable after entering a key?</summary><div class="answer">
+<p>Click Save, not just Test connection or Cancel. Capture again. Use an API key rather than your web login password.</p>
+</div></details>
+<details><summary>13. What does Invalid API key / HTTP 401 mean?</summary><div class="answer">
+<p>Check that your key was not revoked, copy the complete value again, and save it. Never post the key or expose it in screenshots.</p>
+</div></details>
+<details><summary>14. What does Insufficient balance / HTTP 402 mean?</summary><div class="answer">
+<p>Check your API account credit. Working web chat does not imply API balance. Local OCR is unaffected.</p>
+</div></details>
+<details><summary>15. What about HTTP 429, 500, or 503?</summary><div class="answer">
+<p>429 means rate limiting: wait and reduce consecutive requests. 500/503 indicate service errors or overload; try later. See <a href="https://api-docs.deepseek.com/quick_start/error_codes/" target="_blank" rel="noopener">official error codes</a>.</p>
+</div></details>
+<details><summary>16. Why does connection testing pass but image enhancement fail?</summary><div class="answer">
+<p>The connection test does not send images or verify a paid call. Check balance, image-model availability, network, proxy, and firewall access to DeepSeek. Continue using local results if the service is unavailable.</p>
+</div></details>
+<details><summary>17. How can I improve missed text, errors, or table order?</summary><div class="answer">
+<p>Zoom the source page, capture clear text at a smaller size, and avoid cutting glyphs. The bundled model supports Chinese, English, and common characters; handwriting, tiny fonts, and other scripts are not guaranteed. Use AI actions or edit in View text as needed.</p>
+</div></details>
+<details><summary>18. Why does the image look unchanged after AI corrects text?</summary><div class="answer">
+<p>The app preserves the original screenshot to avoid redraw artifacts. AI updates the recognized content used by View text and copying, not the original pixels. New positions may be estimates; check complex results.</p>
+</div></details>
+<details><summary>19. What if selecting text does not respond or highlights are inaccurate?</summary><div class="answer">
+<p>Wait for recognition, then drag within bright text regions rather than toolbar buttons. Re-capture a clear area on one display if mapping looks wrong. Report display scaling and the affected app. Ctrl + A selects all recognized text.</p>
+</div></details>
+<details><summary>20. Why is a video, game, or security window black in the capture?</summary><div class="answer">
+<p>Protected content and Windows secure desktops may prevent capture. Try a normal page or document. The app does not bypass screen protection; report problems affecting ordinary windows with your display setup.</p>
+</div></details>
+<details><summary>21. Why does Ctrl + Enter not copy every word?</summary><div class="answer">
+<p>It copies only yellow-highlighted selections. Use Ctrl + A first, or View text → Copy all. Keep the selection open and check whether another clipboard tool is replacing it.</p>
+</div></details>
+<details><summary>22. Why does memory or disk usage remain after cleanup?</summary><div class="answer">
+<p>Warm models use persistent memory; large captures have temporary peaks. Libraries and models are fixed files and are not removed by Clear cache. Exports are user-managed. Restart and report capture sizes if memory grows abnormally over time.</p>
+</div></details>
+<details><summary>23. Why does cleanup say some files are in use?</summary><div class="answer">
+<p>Busy and newly created temporary files are preserved for active tasks. Cleanup retries every five minutes. Restart if needed; do not remove app, models, or config to clear cache.</p>
+</div></details>
+<details><summary>24. Can I move settings to another computer?</summary><div class="answer">
+<p>Prefer a fresh release extraction and re-enter your key. Configuration has per-user Windows permissions and is not guaranteed to migrate across accounts. Copy exported text if needed; do not distribute config and vault.key as ordinary sharing material.</p>
+</div></details>
+<h2 id="section-10">10. Help and component notices</h2>
+<p>Report Windows version, scaling, actions, and relevant error timestamps. Logs are in <code>D:\DeepPickAI\logs</code>. Remove private content and do not send API keys, config, or private history.</p>
+<p>Local recognition and startup are checked. Real AI calls need your valid key, network, and balance. Other hardware, mixed-DPI configurations, and enterprise policies still need wider testing.</p>
+<p>See Third-Party-Notices.txt and app/licenses for component sources and licenses. This guide can be read offline; external DeepSeek links need internet access.</p><div class="footer">Developer:Chunze Liu · 2026-10-07</div></main></div><script>window.addEventListener("beforeprint",()=>{document.querySelectorAll("details").forEach(d=>d.open=true)});</script></body></html>

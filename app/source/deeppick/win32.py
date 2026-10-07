@@ -26,7 +26,7 @@ def single_instance():
 def hotkey_parts(text):
     seq = QKeySequence(text)
     if seq.isEmpty() or seq.count() != 1:
-        raise ValueError("截图快捷键必须是一个组合键。")
+        raise ValueError("Choose one key combination for capture.")
     combination = seq[0]
     modifiers = combination.keyboardModifiers()
     key = int(combination.key())
@@ -38,20 +38,20 @@ def hotkey_parts(text):
         if modifiers & qt_mod:
             mods |= native
     if mods == 0x4000:
-        raise ValueError("截图快捷键需包含 Ctrl、Alt、Shift 或 Win。")
+        raise ValueError("The capture shortcut must include Ctrl, Alt, Shift, or Win.")
     special = {int(Qt.Key.Key_Space): 0x20, int(Qt.Key.Key_Return): 0x0D,
                int(Qt.Key.Key_Enter): 0x0D, int(Qt.Key.Key_Escape): 0x1B,
                int(Qt.Key.Key_Tab): 0x09, int(Qt.Key.Key_Backspace): 0x08}
     if int(Qt.Key.Key_F1) <= key <= int(Qt.Key.Key_F24):
         if key == int(Qt.Key.Key_F12):
-            raise ValueError("F12 是 Windows 保留键，请选择其他截图快捷键。")
+            raise ValueError("Windows reserves F12. Choose another capture shortcut.")
         vk = 0x70 + key-int(Qt.Key.Key_F1)
     elif 0x30 <= key <= 0x5A:
         vk = key
     elif key in special:
         vk = special[key]
     else:
-        raise ValueError("截图快捷键支持字母、数字、F1–F24、空格和回车。")
+        raise ValueError("Capture shortcuts support letters, numbers, F1–F24, Space, and Enter.")
     return mods, vk
 
 
@@ -86,8 +86,8 @@ class GlobalHotkey(QObject):
         next_id = 0xAD01 if self.active_id != 0xAD01 else 0xAD02
         if not user32.RegisterHotKey(None, next_id, mods, vk):
             if ctypes.get_last_error() == 5:
-                raise RuntimeError("Windows 拒绝注册全局快捷键。请在普通桌面会话中启动本程序。")
-            raise RuntimeError(f"{text} 已被其他程序占用，请在设置中更换截图快捷键。")
+                raise RuntimeError("Windows refused the global shortcut. Run the app in a normal desktop session.")
+            raise RuntimeError(f"{text} is already in use. Change the capture shortcut in Settings.")
         old = self.active_id
         self.active_id, self.sequence = next_id, text
         if old:
@@ -119,7 +119,7 @@ def apply_autostart(enabled, executable, folder):
     # The user explicitly permits a shortcut in Windows' registered Startup
     # folder, including C:. No registry Run entries or system installs.
     if folder.drive.upper() not in ("C:","D:"):
-        raise RuntimeError("Windows 启动文件夹路径无效。")
+        raise RuntimeError("Invalid Windows Startup folder.")
     link = folder / "DeepPick AI.lnk"
     if enabled:
         folder.mkdir(parents=True, exist_ok=True)

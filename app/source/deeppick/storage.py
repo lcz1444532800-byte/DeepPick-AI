@@ -52,7 +52,7 @@ class ConfigStore:
         secure_acl(folder)
         if not self.keypath.exists():
             if self.path.exists():
-                raise RuntimeError("配置加密密钥缺失，请保留 config 文件夹完整。")
+                raise RuntimeError("The configuration encryption key is missing. Keep the config folder intact.")
             atomic_write(self.keypath, AESGCM.generate_key(256))
         secure_acl(self.keypath)
         self.cipher = AESGCM(self.keypath.read_bytes())
@@ -85,7 +85,7 @@ class ConfigStore:
                 raise ValueError("invalid settings keys")
             return settings
         except Exception:
-            self.warning = "配置文件损坏或无法解密，已加载默认设置。保存设置可重新建立配置。"
+            self.warning = "Configuration could not be decrypted. Defaults were loaded; save settings to rebuild it."
             logging.warning("Encrypted configuration rejected; defaults loaded")
             return Settings()
 

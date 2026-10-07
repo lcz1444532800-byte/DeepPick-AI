@@ -14,7 +14,7 @@ from .selection_mapping import remap_selection
 class OverlayToolbar(QWidget):
     def __init__(self, overlay):
         super().__init__()
-        self.setWindowTitle("DeepPick AI · 文字操作")
+        self.setWindowTitle("DeepPick AI · Text actions")
         self.setWindowFlags(Qt.WindowType.Tool | Qt.WindowType.FramelessWindowHint |
                             Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.WindowDoesNotAcceptFocus)
         self.setAttribute(Qt.WidgetAttribute.WA_ShowWithoutActivating)
@@ -23,34 +23,34 @@ class OverlayToolbar(QWidget):
         row = QHBoxLayout(self)
         row.setContentsMargins(10, 7, 10, 7)
         row.setSpacing(3)
-        self.state = QLabel("本地识别中…")
+        self.state = QLabel("Recognizing…")
         self.state.setObjectName("RecognitionState")
-        self.state.setMinimumWidth(172)
+        self.state.setMinimumWidth(200)
         row.addWidget(self.state)
         self.status = QLabel("")
-        self.status.setMinimumWidth(40)
+        self.status.setMinimumWidth(70)
         row.addWidget(self.status)
         self.buttons = {}
-        for name, text, action in (("all", "全选", overlay.select_all), ("clear", "清空", overlay.clear_selection),
-                                   ("copy", "复制", overlay.copy_selected), ("ai", "AI 增强", overlay.request_ai),
-                                   ("result", "查看文字", overlay.request_result), ("close", "×", overlay.close)):
+        for name, text, action in (("all", "Select all", overlay.select_all), ("clear", "Clear", overlay.clear_selection),
+                                   ("copy", "Copy", overlay.copy_selected), ("ai", "AI enhance", overlay.request_ai),
+                                   ("result", "View text", overlay.request_result), ("close", "×", overlay.close)):
             item = QPushButton(text)
             item.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             item.clicked.connect(action)
             self.buttons[name] = item
             row.addWidget(item)
         self.ai_button = self.buttons['ai']
-        self.ai_button.setToolTip("手动增强" if overlay.settings.api_key else "先在设置中填写 API Key")
+        self.ai_button.setToolTip("Enhance manually" if overlay.settings.api_key else "Add an API key in Settings first")
         self.adjustSize()
 
     def refresh(self, overlay):
         for name, item in self.buttons.items():
             item.setEnabled(name == 'close' or (overlay.ready and (name != 'ai' or
                             (bool(overlay.settings.api_key) and not overlay.ai_busy))))
-        self.ai_button.setText("增强中…" if overlay.ai_busy else "AI 增强")
+        self.ai_button.setText("Enhancing…" if overlay.ai_busy else "AI enhance")
         self.state.setText(overlay.state_text)
         self.state.setStyleSheet("color:#16786a;" if overlay.ai_used else "color:#3f65c4;")
-        self.status.setText(f"{len(overlay.selection.indices)} 字" if overlay.selection.indices else "")
+        self.status.setText(f"{len(overlay.selection.indices)} chars" if overlay.selection.indices else "")
 
 
 class TextOverlay(QWidget):
@@ -61,7 +61,7 @@ class TextOverlay(QWidget):
 
     def __init__(self, capture, blocks, settings):
         super().__init__()
-        self.setWindowTitle("DeepPick AI · 文字选择")
+        self.setWindowTitle("DeepPick AI · Select text")
         self.capture, self.settings = capture, settings
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_OpaquePaintEvent)
@@ -72,7 +72,7 @@ class TextOverlay(QWidget):
         self.selection = Selection([])
         self.ready = False
         self.ai_busy = self.ai_used = False
-        self.state_text = "本地识别中…"
+        self.state_text = "Recognizing…"
         self.anchor = self.drag_origin = self.drag_last = None
         self.pending_drags = []
         self.cells, self.lines = [], []
@@ -97,7 +97,7 @@ class TextOverlay(QWidget):
         else:
             self.set_processing()
 
-    def set_processing(self, text="本地识别中…"):
+    def set_processing(self, text="Recognizing…"):
         self.state_text = text
         self.setCursor(red_cursor())
         self.toolbar.refresh(self)
@@ -112,7 +112,7 @@ class TextOverlay(QWidget):
         self.ready = True
         self.ai_used = ai_used
         self.ai_busy = False
-        self.state_text = "已完成 · 已 AI 增强" if ai_used else "已完成 · 未使用 AI"
+        self.state_text = "Done · AI enhanced" if ai_used else "Done · Local OCR"
         self.setCursor(red_cursor(text=True))
         self._layout_text()
         for first, last in self.pending_drags:
@@ -311,7 +311,7 @@ class TextOverlay(QWidget):
         if text:
             self.copied.emit(text)
             self.close()
-        else: self.toolbar.status.setText("请选择")
+        else: self.toolbar.status.setText("Select text")
 
     def request_result(self):
         if self.ready: self.result_requested.emit()
@@ -322,20 +322,20 @@ class TextOverlay(QWidget):
     def set_ai_busy(self, busy):
         self.ai_busy = busy
         if busy:
-            self.state_text = "AI 增强中…"
+            self.state_text = "Enhancing with AI…"
             self.animation.start()
         else:
             if self.ready:
                 self.animation.stop()
-                if self.state_text == 'AI 增强中…':
-                    self.state_text = "已完成 · 已 AI 增强" if self.ai_used else "已完成 · 未使用 AI"
+                if self.state_text == 'Enhancing with AI…':
+                    self.state_text = "Done · AI enhanced" if self.ai_used else "Done · Local OCR"
         self.toolbar.refresh(self)
         self.update()
 
     def mark_ai_failed(self, canceled=False):
         self.set_ai_busy(False)
-        result = '已增强结果' if self.ai_used else '本地结果'
-        self.state_text = ('AI 已取消 · ' if canceled else 'AI 失败 · ') + result
+        result = 'Enhanced result' if self.ai_used else 'Local result'
+        self.state_text = ('AI canceled · ' if canceled else 'AI failed · ') + result
         self.toolbar.refresh(self)
 
     def closeEvent(self, event):

@@ -22,7 +22,7 @@ class CaptureWindow(QWidget):
 
     def __init__(self, cancel_key="Esc"):
         super().__init__()
-        self.setWindowTitle("DeepPick AI · 框选屏幕")
+        self.setWindowTitle("DeepPick AI · Capture")
         self.cancel_key = cancel_key
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
@@ -34,7 +34,7 @@ class CaptureWindow(QWidget):
             self.bounds = self.bounds.united(screen.geometry())
         self.scale = max(s.devicePixelRatio() for s in screens)
         if self.bounds.width()*self.bounds.height()*self.scale**2 > 60_000_000:
-            raise RuntimeError("屏幕总分辨率过大，请暂时减少连接的显示器。")
+            raise RuntimeError("The desktop is too large. Temporarily disconnect a display.")
         self.shots = []
         self.image = QImage()
         painter = None
@@ -50,7 +50,7 @@ class CaptureWindow(QWidget):
             if shot.isNull():
                 if painter:
                     painter.end()
-                raise RuntimeError("无法读取屏幕，请检查远程桌面或屏幕捕获权限。")
+                raise RuntimeError("Could not read the screen. Check remote desktop or capture permissions.")
             self.shots.append((g, shot.toImage(), screen.devicePixelRatio()))
             target = QRectF((g.x()-self.bounds.x())*self.scale, (g.y()-self.bounds.y())*self.scale,
                             g.width()*self.scale, g.height()*self.scale)
@@ -95,13 +95,13 @@ class CaptureWindow(QWidget):
             p.drawRect(rect.adjusted(0, 0, -1, -1))
         screen = QGuiApplication.screenAt(QCursor.pos()) or QGuiApplication.primaryScreen()
         top = screen.geometry().topLeft()-self.bounds.topLeft()
-        hint = QRect(top.x()+30, top.y()+30, 340, 36)
+        hint = QRect(top.x()+30, top.y()+30, 480, 36)
         p.setPen(Qt.PenStyle.NoPen)
         p.setBrush(QColor("#ffffff"))
         p.drawRoundedRect(hint, 8, 8)
         p.setPen(QColor("#202833"))
         dimensions = f"   {round(rect.width()*self.scale)} × {round(rect.height()*self.scale)}" if not rect.isEmpty() else ""
-        p.drawText(hint, Qt.AlignmentFlag.AlignCenter, f"拖动框选 · {self.cancel_key} 取消{dimensions}")
+        p.drawText(hint, Qt.AlignmentFlag.AlignCenter, f"Drag to capture · {self.cancel_key} to cancel{dimensions}")
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:

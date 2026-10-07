@@ -38,7 +38,7 @@ def main():
             socket.waitForBytesWritten(500)
             socket.disconnectFromServer()
         else:
-            QMessageBox.information(None,"DeepPick AI","DeepPick AI 已在后台运行，请点击系统托盘图标打开。")
+            QMessageBox.information(None,"DeepPick AI","DeepPick AI is already running. Open it from the system tray.")
         kernel32.CloseHandle(mutex)
         return 0
     if "--quit" in sys.argv:
@@ -55,14 +55,14 @@ def main():
 
     def exception_handler(kind,value,trace):
         logging.error("Unhandled application event",exc_info=(kind,value,trace))
-        QMessageBox.warning(None,"DeepPick AI","操作未完成，程序仍在运行。请重试。详细信息保存在 D 盘日志中。")
+        QMessageBox.warning(None,"DeepPick AI","The operation could not finish. Please try again. Details are saved in the application logs on D:.")
     sys.excepthook = exception_handler
     from deeppick.controller import Controller
     try:
         controller = Controller(app,paths,startup,icon,"--background" in sys.argv)
     except Exception as error:
         logging.exception("Startup failed")
-        QMessageBox.critical(None,"DeepPick AI 启动失败",str(error))
+        QMessageBox.critical(None,"DeepPick AI could not start",str(error))
         return 1
     if getattr(sys, '_deeppick_runtime', False):
         # Keep Qt owners alive until the entry point finishes explicit shutdown;

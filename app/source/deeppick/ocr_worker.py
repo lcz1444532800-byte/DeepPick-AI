@@ -47,7 +47,7 @@ def run_worker(paths):
                 protocol.write(json.dumps({"ready":True})+"\n")
             except Exception:
                 traceback.print_exc()
-                protocol.write(json.dumps({"error":"离线 OCR 启动失败。请检查模型与运行库是否完整。"}, ensure_ascii=False)+"\n")
+                protocol.write(json.dumps({"error":"Offline OCR could not start. Check that models and runtime files are complete."}, ensure_ascii=False)+"\n")
                 return 1
             requests = queue.Queue(maxsize=4)
             def read_requests():
@@ -96,7 +96,7 @@ def run_worker(paths):
                 except Exception:
                     traceback.print_exc()
                     protocol.write(json.dumps({"id":request.get("id", ""),
-                                                "error":"本次 OCR 失败，请重新截图或缩小识别区域。"}, ensure_ascii=False)+"\n")
+                                                "error":"OCR failed. Capture again or use a smaller area."}, ensure_ascii=False)+"\n")
                 finally:
                     image = None
     return 0

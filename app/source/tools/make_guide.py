@@ -3,8 +3,11 @@ import html
 import re
 from pathlib import Path
 
-base = Path(__file__).resolve().parents[3]
-source = (base / '使用说明.md').read_text('utf-8')
+import argparse
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--directory', type=Path, required=True)
+base = parser.parse_args().directory.resolve()
+source = (base / 'User-Guide.md').read_text('utf-8')
 
 def inline(text):
     text = html.escape(text)
@@ -76,7 +79,7 @@ if detail:
 css = '''
 :root{color-scheme:light;--ink:#17202b;--muted:#697484;--line:#e8ebef;--accent:#1c694e}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:34px}
-body{margin:0;background:#fff;color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei UI",sans-serif}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.85 "Segoe UI",Arial,sans-serif}
 .shell{max-width:1160px;margin:auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:62px;padding:52px 36px 70px}
 nav{position:sticky;top:40px;align-self:start}nav .brand{font-weight:650;font-size:22px;margin-bottom:5px}.tag{color:var(--muted);font-size:13px;margin-bottom:26px}
 nav a{display:block;padding:7px 12px;margin:3px 0;border-radius:7px;color:#596474;font-size:14px;text-decoration:none}nav a:hover{background:#f2f7f4;color:var(--accent)}
@@ -90,8 +93,8 @@ code{background:#f4f6f7;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere
 @media print{nav{display:none}.shell{display:block;padding:0;max-width:none}body{font-size:11pt}h1{font-size:28pt}h2{page-break-after:avoid}details .answer{display:block!important}details{break-inside:avoid}a{color:#222}}
 '''
 nav = ''.join('<a href="#' + identity + '">' + html.escape(title) + '</a>' for identity, title in navigation)
-page = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DeepPick AI · 使用教程与常见问题</title><style>' + css + '</style></head><body><div class="shell"><nav><div class="brand">DeepPick AI</div><div class="tag">1.2.3 · 离线使用教程</div><div class="links">' + nav + '</div></nav><main>' + '\n'.join(parts) + '<div class="footer">Developer:Chunze Liu · 2026-10-07</div></main></div><script>window.addEventListener("beforeprint",()=>{document.querySelectorAll("details").forEach(d=>d.open=true)});</script></body></html>'
-(base / '使用说明.html').write_text(page, 'utf-8')
+page = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DeepPick AI · User Guide & FAQ</title><style>' + css + '</style></head><body><div class="shell"><nav><div class="brand">DeepPick AI</div><div class="tag">1.2.3 · Offline user guide</div><div class="links">' + nav + '</div></nav><main>' + '\n'.join(parts) + '<div class="footer">Developer:Chunze Liu · 2026-10-07</div></main></div><script>window.addEventListener("beforeprint",()=>{document.querySelectorAll("details").forEach(d=>d.open=true)});</script></body></html>'
+(base / 'User-Guide.html').write_text(page, 'utf-8')
 assert len(navigation) == 10
 assert page.count('<details>') == 24
 print('Offline guide generated: 10 sections, 24 FAQ entries.')

@@ -1,32 +1,38 @@
-# DeepPick AI 1.2.3
+# DeepPick AI 1.2.3 — English Edition
 
-受 Mac Live Text 启发，为 Windows 做的屏幕文字提取工具：框选、选字、一键复制。
+A Live Text-inspired screen text tool for Windows: capture, select, copy.
 
 Developer:Chunze Liu
 
-## 下载与使用
+## Download
 
-下载附件 **DeepPickAI-1.2.3-Windows-x64-分享版.zip**，完整解压至 **D:\\**，然后双击 **D:\\DeepPickAI\\DeepPickAI.exe**。
+Download **DeepPickAI-1.2.3-Windows-x64.zip**, extract it to `D:\`, and run `D:\DeepPickAI\DeepPickAI.exe`.
 
-适用 Windows 10/11 x64，当前版本需要 D 盘。软件已附带运行组件和离线模型，不需要安装 Python。
+Windows 10/11 x64 and a D: drive are required. Runtime libraries and offline models are bundled; no Python installation is needed. Choose this ZIP rather than GitHub's Source code archives.
 
-GitHub 的 “Source code” 附件是源码，请普通用户选择上述分享版 ZIP。
+## English interface and documentation
 
-## 功能
+All application windows, settings, tray menus, capture hints, status messages, and errors are in English. AI translation, summaries, and explanations target English. The English interface still supports recognizing text in supported source languages.
 
-- Ctrl + Space 框选屏幕，拖动选字，Ctrl + Enter 复制。
-- 原始字形、黄色选字高亮、多段选择、点阵识别状态。
-- 离线 OCR，无需密钥。
-- 可填写自己的 DeepSeek API Key，用于校正、表格、公式、翻译、总结和解释。
-- 手动 AI 增强不受自动开关影响；AI 使用自己的 API 额度并上传本次选区内容。
-- 后台托盘、开机自启、20 次历史、缓存容量控制和定期清理。
+The package includes **User-Guide.html**, **User-Guide.md**, and **Getting-Started.txt**, covering installation, setup, updates, removal, and 24 FAQs. The [online guide](https://github.com/lcz1444532800-byte/DeepPick-AI/blob/main/docs/User-Guide.md) is also available.
 
-包内附完整离线教程和 24 个常见问题，软件首页也可打开。开机自启默认开启，可在设置中关闭；关闭首页会保留后台运行，托盘“退出”可彻底关闭。
+This English distribution replaces the earlier download at this release. Use the current SHA256.txt when checking your download.
 
-## 本版变化与检查
+## Features
 
-本版新增完整教程入口，并整理为不含个人配置、密钥、历史、缓存或旧构建的分享包。独立解压后验证了空配置启动、离线识别、选字复制、取消、托盘、重复启动与正常退出。
+- Ctrl + Space to capture; drag to select; Ctrl + Enter to copy.
+- Preserve the original screenshot, with yellow highlights and multiple selections.
+- Offline OCR without a key, with animated progress and clear status.
+- Optional DeepSeek enhancement using your own API key and balance.
+- Manual AI enhancement works independently of the automatic switch.
+- System tray, startup settings, 20-result history, cache limits, and periodic cleanup.
 
-附件 **SHA256.txt** 和 **发布文件校验.json** 提供文件校验。真实 AI 调用需要有效 Key、网络与余额；不同硬件、多屏混合缩放及企业安全策略尚未全面实机验证。
+**Start with Windows is enabled by default** and can be disabled in Settings. Closing the homepage keeps the app in the tray; choose Exit to quit.
 
-根 EXE 和 Python DLL 保留官方运行时签名；应用源码没有独立发行签名。
+AI sends the selected screenshot and OCR text to DeepSeek. Local OCR does not upload captures. Releases include no developer keys, personal configuration, history, or caches.
+
+## Verification
+
+English layouts, offline OCR, selection/copy, AI failure handling, and the package checksums are verified before upload. Real paid AI calls are not included in testing. Other hardware, mixed-DPI displays, and enterprise policies still need broader testing.
+
+SHA256.txt checks the archive; File-Checksums.json checks bundled files. The official runtime signatures are retained, while application source has no independent publisher signature.
