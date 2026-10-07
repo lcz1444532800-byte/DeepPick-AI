@@ -1,0 +1,42 @@
+# Private user data
+/config/
+/history/
+/logs/
+/cache/
+/temp/
+/output/
+/auth/
+.env
+.env.*
+*.enc
+vault.key
+hosts.yml
+*.log
+*.pending
+
+# Development environments and build output
+/app/development/
+.venv/
+venv/
+build/
+dist/
+__pycache__/
+*.pyc
+*.pyo
+*.pdb
+*.lnk
+
+# Binary runtimes and models are distributed through Releases
+*.exe
+*.dll
+*.pyd
+*.onnx
+*.pdmodel
+*.pdiparams
+*.pdiparams.info
+*.zip
+*.whl
+*.tar
+*.tar.gz
+*.7z
+*.msi

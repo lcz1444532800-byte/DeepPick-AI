@@ -1,0 +1,9 @@
+{
+  "kind": "python-embedded",
+  "python": "3.11.9",
+  "source": "https://www.python.org/ftp/python/3.11.9/python-3.11.9-embed-amd64.zip",
+  "package_sha256": "009d6bf7e3b2ddca3d784fa09f90fe54336d5b60f0e0f305c37f400bf83cfd3b",
+  "executable_sha256": "d5355e1de2a5195dccb1ba524b146aa7705be71af18d876819756838251b37b3",
+  "binary_changes": "none; official pythonw.exe renamed only",
+  "application_version": "1.2.3"
+}

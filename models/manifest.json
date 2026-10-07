@@ -1,0 +1,20 @@
+{
+  "engine": "PaddleOCR PP-OCRv4",
+  "sources": {
+    "det": "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_det_infer.tar",
+    "rec": "https://paddleocr.bj.bcebos.com/PP-OCRv4/chinese/ch_PP-OCRv4_rec_infer.tar",
+    "cls": "https://paddleocr.bj.bcebos.com/dygraph_v2.0/ch/ch_ppocr_mobile_v2.0_cls_infer.tar"
+  },
+  "sha256": {
+    "det\\inference.pdiparams": "49ee815e30cff43cb1057d33bf0d94193e4d4f1ae28451cad15b40be830df915",
+    "det\\inference.pdiparams.info": "4e0f29e5fa476126f9efe0dc69f7ca7be960705ad549385d30c9604193463e69",
+    "det\\inference.pdmodel": "2ad68ed2768fe6c41166a5bc64680cc9f445390acb6528da449a4db2f7b90e14",
+    "rec\\inference.pdiparams": "a6dbfa63e7ee161688523c954e9e293f77dc24044db81e836ff9c7f103fd191a",
+    "rec\\inference.pdiparams.info": "0706cc669bdce382f582c139906076b170b112c51bf32573fe43438025777f12",
+    "rec\\inference.pdmodel": "bf78f3898a004615e69c676259d8171bd7ae99000653b41fd72aaa36ae8bd304",
+    "cls\\inference.pdiparams": "d1efda1b80e174b4fcb168a035ac96c1af4938892bd86a55f300a6027105d08c",
+    "cls\\inference.pdiparams.info": "ee0c2eaa4c09814802bf520c01dfdbc1345dc2879dc9e67424d32c7b0ee88e59",
+    "cls\\inference.pdmodel": "3c4337ec61722a20b1dca2e5bfaffc313c0592bc89ad6e0d45168224186f6683",
+    "ppocr_keys_v1.txt": "a1c84d9bdb9ab29043c58896224d32941783eb821629618416dcb08f12886492"
+  }
+}
