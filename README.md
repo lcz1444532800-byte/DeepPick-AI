@@ -72,7 +72,7 @@ Open an [issue](https://github.com/lcz1444532800-byte/DeepPick-AI/issues) with y
 
 ## Licensing and acknowledgments
 
-An open-source license has not yet been selected for the original application code. Third-party components retain their respective licenses; see [notices](THIRD_PARTY_NOTICES.md). License texts are included with releases.
+The original application code is released under the [MIT License](LICENSE). Third-party components retain their respective licenses; see [notices](THIRD_PARTY_NOTICES.md). License texts are included with releases.
 
 Inspired by macOS Live Text. This project is not affiliated with Apple and does not include Apple's implementation. Local OCR uses PaddleOCR models distributed through RapidOCR, ONNX Runtime, and a PySide6 interface.
 
